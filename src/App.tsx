@@ -32,7 +32,7 @@ function App() {
       </div>
       {formOpen && (
         <div className="fixed top-0 right-0 left-0 w-full h-full backdrop-blur-3xl backdrop-opacity-75">
-          <div className="absolute top-1/6 left-1/3 bg-white opacity-100 rounded-2xl w-1/3 h-1/2 shadow-2xl flex flex-col py-3 px-6">
+          <div className="absolute top-1/6 md:left-1/3 left-1/4  bg-white opacity-100 rounded-2xl md:w-1/3 w-64 h-[310px] md:h-80 xl:h-[370px] shadow-2xl flex flex-col py-3 px-6">
             <h1 className="text-center text-xl font-medium mb-2">Add Image</h1>
             <form>
               <input
@@ -40,7 +40,7 @@ function App() {
                 className="w-full bg-gray-200  rounded-lg p-2 text-sm font-light"
                 placeholder="Enter image label here..."
               ></input>
-              <div className="flex flex-col h-52 mt-2 bg-gray-200 rounded-lg justify-center">
+              <div className="flex flex-col xl:h-56 lg:h-44 md:h-42 h-30 mt-2 bg-gray-200 rounded-lg justify-center">
                 <input
                   type="file"
                   accept="image/*"
@@ -55,7 +55,7 @@ function App() {
                   Choose a Image to Upload
                 </label>
               </div>
-              <div className="flex flex-row gap-2 justify-end mt-2">
+              <div className="flex flex-row max-md:flex-col gap-2 justify-end mt-2">
                 <button
                   onClick={() => setFormOpen(false)}
                   className="px-2 py-1 rounded-lg bg-red-600 text-white font-medium hover:cursor-pointer shadow-xl"
