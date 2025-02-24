@@ -85,17 +85,34 @@ function App() {
                   />
                 </div>
               )}
-
               <div className="flex flex-row max-md:flex-col gap-2 justify-end mt-2">
-                <button
+                {choosenImage && (
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="fileInput"
+                      onChange={handleFileChange}
+                    />
+                    <label htmlFor="fileInput">
+                    <div
+                      className="px-2 py-1 rounded-lg bg-black text-white font-medium hover:cursor-pointer shadow-xl"
+                    >
+                      Change Image
+                    </div>
+                    </label>
+                  </div>
+                )}
+                <div
                   onClick={() => setFormOpen(false)}
                   className="px-2 py-1 rounded-lg bg-red-600 text-white font-medium hover:cursor-pointer shadow-xl"
                 >
                   Cancel
-                </button>
-                <button className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl">
+                </div>
+                <div className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl">
                   Confirm
-                </button>
+                </div>
               </div>
             </form>
           </div>
