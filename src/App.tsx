@@ -1,10 +1,27 @@
 import { useState } from "react";
-import "./App.css";
 import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 
 function App() {
   const [formOpen, setFormOpen] = useState(false);
+  const [currentLabel, setCurrentLabel] = useState<string | null>(null);
+  const [choosenImage, setChoosenImage] = useState<string | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const imageURL = URL.createObjectURL(file);
+      setChoosenImage(imageURL);
+    }
+  };
+
+  const handleLabelFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCurrentLabel(event.target.value);
+  };
+
+  console.log(currentLabel);
 
   return (
     <>
@@ -39,22 +56,36 @@ function App() {
                 type="text"
                 className="w-full bg-gray-200  rounded-lg p-2 text-sm font-light"
                 placeholder="Enter image label here..."
+                onChange={handleLabelFormChange}
               ></input>
-              <div className="flex flex-col xl:h-56 lg:h-44 md:h-42 h-30 mt-2 bg-gray-200 rounded-lg justify-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="fileInput"
-                />
-                <label
-                  htmlFor="fileInput"
-                  className="flex flex-col px-4 py-2 font-light text-sm text-gray-600 rounded-lg cursor-pointer transition items-center"
-                >
-                  <FaFileUpload size={32} color="#4a5565" />
-                  Choose a Image to Upload
-                </label>
-              </div>
+              {!choosenImage && (
+                <div className="flex flex-col xl:h-56 lg:h-44 md:h-42 h-30 mt-2 bg-gray-200 rounded-lg justify-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="fileInput"
+                    onChange={handleFileChange}
+                  />
+                  <label
+                    htmlFor="fileInput"
+                    className="flex flex-col px-4 py-2 font-light text-sm text-gray-600 rounded-lg cursor-pointer transition items-center"
+                  >
+                    <FaFileUpload size={32} color="#4a5565" />
+                    Choose a Image to Upload
+                  </label>
+                </div>
+              )}
+              {choosenImage && (
+                <div className="flex flex-col xl:h-56 lg:h-44 md:h-42 h-30 mt-2 rounded-lg items-center">
+                  <img
+                    src={choosenImage}
+                    alt="Preview"
+                    className="max-w-auto h-50 max-xl:h-40 max-lg:h-36 max-md:h-32 max-sm:h-24 object-cover rounded-lg shadow-md"
+                  />
+                </div>
+              )}
+
               <div className="flex flex-row max-md:flex-col gap-2 justify-end mt-2">
                 <button
                   onClick={() => setFormOpen(false)}
