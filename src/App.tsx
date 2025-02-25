@@ -42,19 +42,38 @@ function App() {
     setChoosenImage(null);
   };
 
-  console.log(images);
-
   return (
     <>
       <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
         <h1 className="text-center text-3xl font-bold text-white">
           Inspection Form
         </h1>
-        <div className="w-xl mt-2 shadow-xl self-center flex flex-col rounded-md p-5 bg-white">
-          <div className="flex flex-col items-center justify-center h-96 bg-gray-200 rounded-md">
-            <FaImage size={56} color="#4a5565" />
-            <p className="font-light text-gray-600">No images added</p>
-          </div>
+        <div className="w-4xl mt-2 shadow-xl self-center flex flex-col rounded-md p-5 bg-white">
+          {images.length == 0 ? (
+            <div className="flex flex-col items-center justify-center h-96 bg-gray-200 rounded-md">
+              <FaImage size={56} color="#4a5565" />
+              <p className="font-light text-gray-600">No images added</p>
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center bg-gray-200 rounded-md gap-2 p-1">
+              {
+                images.map((img) => (
+                  <div className="bg-white rounded-t-lg rounded-b-md shadow-md">
+                    <div className="flex flex-col w-32 h-32">
+                      <img
+                        src={img.image}
+                        alt="Preview"
+                        className="w-full h-full object-contain rounded-t-lg"
+                      />
+                    </div>
+                    <p className="font-medium text-center">
+                      {img.label}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          )}
           <div className="flex flex-row gap-2 justify-end mt-2">
             <button
               onClick={() => setFormOpen(true)}
