@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPencilAlt } from "react-icons/fa";
 
 type ImageField = {
   label: string;
@@ -14,6 +13,8 @@ function App() {
   const [currentLabel, setCurrentLabel] = useState<string | null>(null);
   const [choosenImage, setChoosenImage] = useState<string | null>(null);
   const [images, setImages] = useState<ImageField[]>([]);
+  const [editId, setEditID] = useState<number | null>(null);
+  const [tempLabel, setTempLabel] = useState<string>("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -48,6 +49,22 @@ function App() {
     setChoosenImage(null);
   };
 
+  const handleEditLabel = (id: number, label: string) => {
+    setEditID(id);
+    setTempLabel(label);
+  };
+
+  const handleSaveEdit = (id: number) => {
+    setImages((arr) =>
+      arr.map((img, index) =>
+        index === id ? { ...img, label: tempLabel } : img
+      )
+    );
+    setEditID(null);
+  };
+
+  console.log(images)
+
   return (
     <>
       <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
@@ -62,28 +79,39 @@ function App() {
             </div>
           ) : (
             <div className="flex flex-wrap justify-center bg-gray-200 rounded-md gap-2 p-1">
-              {
-                images.map((img, index) => (
-                  <div >
-                    <div className="flex flex-col w-44 h-44">
-                      <img
-                        src={img.image}
-                        alt="Preview"
-                        className="w-full h-full object-contain rounded-t-lg"
+              {images.map((img, index) => (
+                <div>
+                  <div className="flex flex-col w-44 h-44">
+                    <img
+                      src={img.image}
+                      alt="Preview"
+                      className="w-full h-full object-contain rounded-t-lg"
+                    />
+                  </div>
+                  <div className="flex flex-row font-medium bg-white shadow-md px-1 items-center rounded-sm">
+                    {editId === index ? (
+                      <input
+                        type="text"
+                        value={tempLabel}
+                        autoFocus
+                        className="w-36"
+                        onChange={(e) => setTempLabel(e.target.value)}
+                        onBlur={() => handleSaveEdit(index)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSaveEdit(index)}
                       />
-                    </div>
-                    <div className="flex flex-row font-medium bg-white shadow-md px-1 items-center rounded-sm">
-                      <p>
+                    ) : (
+                      <p className="cursor-text inline-block" onClick={() => handleEditLabel(index, img.label)}>
                         {img.label}
                       </p>
-                      <div className="flex flex-row gap-1 ml-auto">
-                        <FaPencilAlt color="#4a5565"/>
-                        <FaRegTrashAlt color="#4a5565" className="hover:cursor-pointer " onClick={() => deleteImage(index)}/>
-                      </div>
-                    </div>
+                    )}
+                    <FaRegTrashAlt
+                      color="#4a5565"
+                      className="hover:cursor-pointer ml-auto"
+                      onClick={() => deleteImage(index)}
+                    />
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           )}
           <div className="flex flex-row gap-2 justify-end mt-2">
