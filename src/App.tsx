@@ -2,10 +2,16 @@ import { useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 
+type ImageField = {
+  label: string;
+  image: string;
+};
+
 function App() {
   const [formOpen, setFormOpen] = useState(false);
   const [currentLabel, setCurrentLabel] = useState<string | null>(null);
   const [choosenImage, setChoosenImage] = useState<string | null>(null);
+  const [images, setImages] = useState<ImageField[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -21,8 +27,21 @@ function App() {
     setCurrentLabel(event.target.value);
   };
 
-  console.log(currentLabel == null || currentLabel == "");
-  console.log(choosenImage == null);
+  const appendImages = (label: string, image: string) => {
+    const newEntry: ImageField = {
+      label: label,
+      image: image,
+    };
+    setImages((arr) => [...arr, newEntry]);
+  };
+
+  const handleSubmitNewImage = (label: string, image: string) => {
+    appendImages(label, image);
+    setFormOpen(false);
+  };
+
+  console.log(images);
+
   return (
     <>
       <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
@@ -111,7 +130,12 @@ function App() {
                 {choosenImage != null &&
                 currentLabel != "" &&
                 currentLabel != null ? (
-                  <div className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl">
+                  <div
+                    onClick={() =>
+                      handleSubmitNewImage(currentLabel, choosenImage)
+                    }
+                    className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl"
+                  >
                     Confirm
                   </div>
                 ) : (
