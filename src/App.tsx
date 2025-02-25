@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 
 type ImageField = {
   label: string;
@@ -27,7 +29,7 @@ function App() {
     setCurrentLabel(event.target.value);
   };
 
-  const appendImages = (label: string, image: string) => {
+  const appendImage = (label: string, image: string) => {
     const newEntry: ImageField = {
       label: label,
       image: image,
@@ -35,8 +37,12 @@ function App() {
     setImages((arr) => [...arr, newEntry]);
   };
 
+  const deleteImage = (index: number) => {
+    setImages((arr) => arr.filter((_, i) => i !== index));
+  };
+
   const handleSubmitNewImage = (label: string, image: string) => {
-    appendImages(label, image);
+    appendImage(label, image);
     setFormOpen(false);
     setCurrentLabel(null);
     setChoosenImage(null);
@@ -57,18 +63,24 @@ function App() {
           ) : (
             <div className="flex flex-wrap justify-center bg-gray-200 rounded-md gap-2 p-1">
               {
-                images.map((img) => (
-                  <div className="bg-white rounded-t-lg rounded-b-md shadow-md">
-                    <div className="flex flex-col w-32 h-32">
+                images.map((img, index) => (
+                  <div >
+                    <div className="flex flex-col w-44 h-44">
                       <img
                         src={img.image}
                         alt="Preview"
                         className="w-full h-full object-contain rounded-t-lg"
                       />
                     </div>
-                    <p className="font-medium text-center">
-                      {img.label}
-                    </p>
+                    <div className="flex flex-row font-medium bg-white shadow-md px-1 items-center rounded-sm">
+                      <p>
+                        {img.label}
+                      </p>
+                      <div className="flex flex-row gap-1 ml-auto">
+                        <FaPencilAlt color="#4a5565"/>
+                        <FaRegTrashAlt color="#4a5565" className="hover:cursor-pointer " onClick={() => deleteImage(index)}/>
+                      </div>
+                    </div>
                   </div>
                 )
               )}
