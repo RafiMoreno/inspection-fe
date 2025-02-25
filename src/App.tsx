@@ -21,15 +21,15 @@ function App() {
     setCurrentLabel(event.target.value);
   };
 
-  console.log(currentLabel);
-
+  console.log(currentLabel == null || currentLabel == "");
+  console.log(choosenImage == null);
   return (
     <>
-      <div className="w-full p-12 flex flex-col">
-        <h1 className="font-mono text-center text-3xl font-light">
+      <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
+        <h1 className="text-center text-3xl font-bold text-white">
           Inspection Form
         </h1>
-        <div className="w-xl mt-2 shadow-xl border-1 border-solid border-gray-600 self-center flex flex-col rounded-md p-5">
+        <div className="w-xl mt-2 shadow-xl self-center flex flex-col rounded-md p-5 bg-white">
           <div className="flex flex-col items-center justify-center h-96 bg-gray-200 rounded-md">
             <FaImage size={56} color="#4a5565" />
             <p className="font-light text-gray-600">No images added</p>
@@ -96,11 +96,9 @@ function App() {
                       onChange={handleFileChange}
                     />
                     <label htmlFor="fileInput">
-                    <div
-                      className="px-2 py-1 rounded-lg bg-black text-white font-medium hover:cursor-pointer shadow-xl"
-                    >
-                      Change Image
-                    </div>
+                      <div className="px-2 py-1 rounded-lg bg-black text-white font-medium hover:cursor-pointer shadow-xl">
+                        Change Image
+                      </div>
                     </label>
                   </div>
                 )}
@@ -110,9 +108,17 @@ function App() {
                 >
                   Cancel
                 </div>
-                <div className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl">
-                  Confirm
-                </div>
+                {choosenImage != null &&
+                currentLabel != "" &&
+                currentLabel != null ? (
+                  <div className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl">
+                    Confirm
+                  </div>
+                ) : (
+                  <div className="px-2 py-1 rounded-lg bg-green-500 text-white hover:cursor-default font-medium shadow-xl opacity-25">
+                    Confirm
+                  </div>
+                )}
               </div>
             </form>
           </div>
