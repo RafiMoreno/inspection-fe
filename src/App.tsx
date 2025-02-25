@@ -38,6 +38,8 @@ function App() {
   const handleSubmitNewImage = (label: string, image: string) => {
     appendImages(label, image);
     setFormOpen(false);
+    setCurrentLabel(null);
+    setChoosenImage(null);
   };
 
   console.log(images);
