@@ -2,16 +2,19 @@ import { useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { uploadImagesApi } from "./api/api";
 
 type ImageField = {
   label: string;
-  image: string;
+  image: File;
+  preview: string;
 };
 
 function App() {
   const [formOpen, setFormOpen] = useState(false);
   const [currentLabel, setCurrentLabel] = useState<string | null>(null);
   const [choosenImage, setChoosenImage] = useState<string | null>(null);
+  const [choosenFile, setChoosenFile] = useState<File | null>(null);
   const [images, setImages] = useState<ImageField[]>([]);
   const [editId, setEditID] = useState<number | null>(null);
   const [tempLabel, setTempLabel] = useState<string>("");
@@ -21,6 +24,7 @@ function App() {
       const file = event.target.files[0];
       const imageURL = URL.createObjectURL(file);
       setChoosenImage(imageURL);
+      setChoosenFile(file);
     }
   };
 
@@ -30,10 +34,11 @@ function App() {
     setCurrentLabel(event.target.value);
   };
 
-  const appendImage = (label: string, image: string) => {
+  const appendImage = (label: string, image: File, preview: string) => {
     const newEntry: ImageField = {
       label: label,
       image: image,
+      preview: preview,
     };
     setImages((arr) => [...arr, newEntry]);
   };
@@ -42,11 +47,14 @@ function App() {
     setImages((arr) => arr.filter((_, i) => i !== index));
   };
 
-  const handleSubmitNewImage = (label: string, image: string) => {
-    appendImage(label, image);
-    setFormOpen(false);
-    setCurrentLabel(null);
-    setChoosenImage(null);
+  const handleSubmitNewImage = () => {
+    if (choosenImage && choosenFile && currentLabel) {
+      appendImage(currentLabel, choosenFile, choosenImage);
+      setFormOpen(false);
+      setCurrentLabel(null);
+      setChoosenImage(null);
+      setChoosenFile(null);
+    }
   };
 
   const handleEditLabel = (id: number, label: string) => {
@@ -63,7 +71,18 @@ function App() {
     setEditID(null);
   };
 
-  console.log(images)
+  const handleUploadImages = async() => {
+    if (images.length != 0) {
+      try{
+        const res = await uploadImagesApi(images);
+        console.log("Upload succesful :", res)
+      }catch (err){
+        console.error("Upload failed :", err)
+      }
+    }else{
+      alert("No Images Added")
+    }
+  }
 
   return (
     <>
@@ -83,7 +102,7 @@ function App() {
                 <div>
                   <div className="flex flex-col w-44 h-44">
                     <img
-                      src={img.image}
+                      src={img.preview}
                       alt="Preview"
                       className="w-full h-full object-contain rounded-t-lg"
                     />
@@ -121,7 +140,7 @@ function App() {
             >
               Add Image
             </button>
-            <button className="px-2 py-1 rounded-lg bg-black text-white font-medium hover:cursor-pointer shadow-xl">
+            <button onClick={() => handleUploadImages()} className="px-2 py-1 rounded-lg bg-black text-white font-medium hover:cursor-pointer shadow-xl">
               Submit
             </button>
           </div>
@@ -193,7 +212,7 @@ function App() {
                 currentLabel != null ? (
                   <div
                     onClick={() =>
-                      handleSubmitNewImage(currentLabel, choosenImage)
+                      handleSubmitNewImage()
                     }
                     className="px-2 py-1 rounded-lg bg-green-500 text-white font-medium hover:cursor-pointer shadow-xl"
                   >
