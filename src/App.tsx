@@ -88,12 +88,12 @@ function App() {
 
   return (
     <>
-      <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
+      <div className="w-screen h-screen p-12 flex flex-col bg-gray-400">
       <ToastContainer autoClose={2000} />
-        <h1 className="text-center text-3xl font-bold text-white">
+        <h1 className="text-center text-3xl font-semibold text-white">
           Inspection Form
         </h1>
-        <div className="w-4xl mt-2 shadow-xl self-center flex flex-col rounded-md p-5 bg-white">
+        <div className="w-4xl max-sm:w-[310px] max-lg:w-xl mt-2 shadow-xl self-center flex flex-col rounded-md p-5 bg-white">
           {images.length == 0 ? (
             <div className="flex flex-col items-center justify-center h-96 bg-gray-200 rounded-md">
               <FaImage size={56} color="#4a5565" />
@@ -103,7 +103,7 @@ function App() {
             <div className="flex flex-wrap justify-center bg-gray-200 rounded-md gap-2 p-1">
               {images.map((img, index) => (
                 <div>
-                  <div className="flex flex-col w-44 h-44">
+                  <div className="flex flex-col w-44 h-44 max-sm:w-28 max-lg:w-36">
                     <img
                       src={img.preview}
                       alt="Preview"
@@ -116,7 +116,7 @@ function App() {
                         type="text"
                         value={tempLabel}
                         autoFocus
-                        className="w-36"
+                        className="w-36 max-sm:w-20 max-lg:w-28"
                         onChange={(e) => setTempLabel(e.target.value)}
                         onBlur={() => handleSaveEdit(index)}
                         onKeyDown={(e) => e.key === "Enter" && handleSaveEdit(index)}
@@ -151,7 +151,7 @@ function App() {
       </div>
       {formOpen && (
         <div className="fixed top-0 right-0 left-0 w-full h-full backdrop-blur-3xl backdrop-opacity-75">
-          <div className="absolute top-1/6 md:left-1/3 left-1/4  bg-white opacity-100 rounded-2xl md:w-1/3 w-64 h-[310px] md:h-80 xl:h-[370px] shadow-2xl flex flex-col py-3 px-6">
+          <div className="absolute top-1/6 mx-auto right-0 left-0 bg-white opacity-100 rounded-2xl max-sm:w-[305px] max-sm:h-[350px] md:w-[420px] max-lg:w-[480px] xl:w-[640px] h-[310px] md:h-80 xl:h-[370px] shadow-2xl flex flex-col py-3 px-6">
             <h1 className="text-center text-xl font-medium mb-2">Add Image</h1>
             <form>
               <input
