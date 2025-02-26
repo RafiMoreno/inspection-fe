@@ -3,6 +3,7 @@ import { FaImage } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { uploadImagesApi } from "./api/api";
+import { toast, ToastContainer } from "react-toastify";
 
 type ImageField = {
   label: string;
@@ -74,19 +75,21 @@ function App() {
   const handleUploadImages = async() => {
     if (images.length != 0) {
       try{
-        const res = await uploadImagesApi(images);
-        console.log("Upload succesful :", res)
+        await uploadImagesApi(images);
+        toast.success("Successfully uploaded!", {position: "bottom-center"})
+        setImages([]);
       }catch (err){
-        console.error("Upload failed :", err)
+        toast.error("Error encountered!", {position: "bottom-center"})
       }
     }else{
-      alert("No Images Added")
+      toast.warn("No images added yet!", {position: "bottom-center"})
     }
   }
 
   return (
     <>
       <div className="w-full h-screen p-12 flex flex-col bg-gray-400">
+      <ToastContainer autoClose={2000} />
         <h1 className="text-center text-3xl font-bold text-white">
           Inspection Form
         </h1>
